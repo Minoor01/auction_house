@@ -1,0 +1,7 @@
+Subject: Confirm your email address in Auction House
+
+Hello {{ user.username }} ,
+Welcome to Auction House.
+
+Please click on the link below to confirm your email address ({{ user.email }}) and start a new journey with us 
+{{ activate_url }} 

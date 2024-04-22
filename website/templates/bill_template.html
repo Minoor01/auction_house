@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            padding: 20px;
+        }
+        .bill-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+        }
+        .bill-details {
+            margin-top: 30px;
+        }
+        .bill-details p {
+            margin-bottom: 10px;
+        }
+        .bill-details p span {
+            font-weight: bold;
+        }
+        .qr-code {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .download-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .download-button button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .download-button button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="bill-container" id="bill-container">
+        <h1>Bill for {{ customer_name }}</h1>
+        <div class="bill-details">
+            <p><span>Total Amount:</span> ${{ total_amount }}</p>
+            <!-- Add other bill details here -->
+        </div>
+        <div class="qr-code" id="qr-code"></div>
+        <div class="download-button">
+            <button onclick="generatePDF()">Download PDF Bill with QR</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        function generatePDF() {
+            const billContainer = document.getElementById('bill-container');
+            const qrCodeElement = document.getElementById('qr-code');
+            
+            // Encode bill details as JSON string
+            const billDetails = {
+                customer_name: '{{ customer_name }}',
+                total_amount: '{{ total_amount }}',
+                // Add other bill details here
+            };
+            const billDetailsString = JSON.stringify(billDetails);
+
+            // Generate QR code
+            const qrCode = new QRCode(qrCodeElement, {
+                text: billDetailsString,
+                width: 128,
+                height: 128,
+                colorDark : '#000000',
+                colorLight : '#ffffff',
+                correctLevel : QRCode.CorrectLevel.H
+            });
+
+            // Generate PDF
+            const pdf = new jsPDF();
+            pdf.html(billContainer, {
+                callback: function (pdf) {
+                    // Get QR code image data
+                    const imageData = qrCodeElement.querySelector('img').src;
+                    
+                    // Embed QR code image in PDF
+                    pdf.addImage(imageData, 'PNG', 20, 250, 50, 50); // Adjust position and size as needed
+
+                    // Save PDF
+                    pdf.save('bill_with_qr.pdf');
+                }
+            });
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
+
+</body>
+</html>

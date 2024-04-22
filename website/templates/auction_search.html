@@ -1,0 +1,57 @@
+<!-- auction_search.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Search form -->
+    <div class="search-container text-center mb-4">
+        <form action="{% url 'website:search_live_auctions' %}" method="GET" class="form-inline">
+            <input type="text" class="form-control" placeholder="Search for auctions..." name="query" required>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    <!-- Display Search Results -->
+    <div class="row">
+        {% if auctions %}
+            {% for auction in auctions %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>{{ auction.title }}</h2>
+                        </div>
+                        <div class="card-body">
+                            {% if auction.image %}
+                                <img src="{{ auction.image.url }}" alt="{{ auction.title }} Image" class="card-img-top">
+                            {% endif %}
+                            <h10 class="card-text text-dark">Seller: {{ auction.created_by.username }}</h10><br>
+                            <p class="card-text text-dark mb-0">{{ auction.description|truncatewords:15 }}</p>
+                            
+                            <p class="card-text mb-3">
+                                <small class="text-muted">
+                                    Start Time: <span class="start-time">{{ auction.start_time }}</span><br>
+                                    End Time: {{ auction.end_time }}
+                                </small>
+                            </p>
+                            <p class="card-text font-weight-bold text-primary mb-3">
+                                Start Price: {{ auction.start_price }}<br>
+                                Current Bid: {{ auction.current_bid }}
+                            </p>
+                            <a href="{% url 'website:auction_detail' item_id=auction.id %}" class="btn btn-sm btn-primary">View Details</a>
+                            {% if user.is_authenticated %}
+                                {% if user.buyer_seller %}
+                                    {% if user != auction.created_by %}
+                                        <a href="{% url 'website:bidding' auction.id %}" class="btn btn-sm btn-primary">Bid</a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No matching auctions found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

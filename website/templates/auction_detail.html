@@ -1,0 +1,58 @@
+<!-- auction_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Display Auction Image -->
+        <div class="col-md-6">
+            <img src="{{ auction_detail.image.url }}" alt="{{ auction_detail.title }}" class="img-fluid">
+            <br>
+            {% if auction_detail.sketchfab_script %}
+                <div class="sketchfab-embed-wrapper">
+                    {{ auction_detail.sketchfab_script|safe }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Auction Details -->
+        <div class="col-md-6">
+            <div style="background-color: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 10px;">
+                <h2 class="mb-4 text-black">{{ auction_detail.title }} Details</h2>
+                <p class="card-text text-dark">Seller: <a href="{% url 'website:seller_profile' seller_id=auction_detail.created_by.buyer_seller.user_id %}">{{ auction_detail.created_by.username }}</a></p>
+                <p style="color: black;"><strong>Description:</strong> {{ auction_detail.description }}</p>
+                <p style="color: black;"><strong>Start Time:</strong> {{ auction_detail.start_time }}</p>
+                <p style="color: black;"><strong>End Time:</strong> {{ auction_detail.end_time }}</p>
+                <p style="color: black;"><strong>Address:</strong> {{ auction_detail.address }}</p>
+                
+                {% if auction_detail.is_past %}
+                    {% if auction_detail.winner %}
+                        <p style="color: black;"><strong>Winner:</strong> {{ auction_detail.winner.username }}</p>
+                        <p style="color: black;"><strong>Winning Bid:</strong> {{ auction_detail.current_bid }}</p>
+                        {% if request.user == auction_detail.winner %}
+                            <a href="{% url 'website:seller_rating' auction_detail.id %}" class="btn btn-primary">Rate the Seller</a>
+                        {% endif %}
+                    {% else %}
+                        <p style="color: black;"><strong>No bid</strong></p>
+                    {% endif %}
+                {% else %}
+                    <p style="color: black;"><strong>Current Bid:</strong> {{ auction_detail.current_bid }}</p>
+                {% endif %}
+                
+                <!-- Add buttons for bidding or other actions as needed -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Display Sketchfab Viewer
+    <div class="row mt-4">
+        <div class="col-md-12">
+            {% if auction_detail.sketchfab_script %}
+                <div class="sketchfab-embed-wrapper">
+                    {{ auction_detail.sketchfab_script|safe }}
+                </div>
+            {% endif %}
+        </div>
+    </div> -->
+</div>
+{% endblock %}

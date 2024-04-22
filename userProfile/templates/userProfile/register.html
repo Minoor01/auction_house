@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="container d-flex justify-content-center align-items-center">
+    <div class="card p-4 border-primary rounded shadow" style="background-color: #001f3f; max-width: 400px;">
+        <h1 style="color: white; font-size: 20px;">Please fill up the form to buy or sell property from our website</h1><br>
+        {%if user.is_authenticated%}
+        <form method="POST">
+            {%csrf_token%}
+            {{form.as_p}}
+            <input type="submit" value="submit">
+        </form>
+    {%endif%}
+
+    </div>
+</div>
+{% endblock %}

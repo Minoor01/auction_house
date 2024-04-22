@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <br><br><br><br>
+    {%if user.is_authenticated%}
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="card p-4 border-primary rounded shadow" style="background-color: #001f3f; width: 350px; color: white; align-items: center;">
+            <h2 class="card-title text-light mb-4" style="text-align: center;">My profile</h2>
+            <p class="card-text text-light"></p>
+            Name: {{ profile.user.username |title }}<br>
+            Email: {{ profile.user.email }}<br>
+            Phone: {{ profile.phone }}<br>
+            Address: {{ profile.address }}</p>
+            <a href="{%url 'userProfile:profile_update'%}" class="btn btn-primary " 
+            style="
+            background-color: white; 
+            color: #001f3f;
+            ">
+            Update </a>
+        </div>
+    </div>
+    {%else%}
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="card p-4 border-primary rounded shadow" style="background-color: #001f3f; width: 350px; ">
+            <h2 class="card-title text-light mb-4">Welcome to Auction House</h2>
+            <p>please register first</p>
+        </div>
+        </div>
+    {%endif%}
+{% endblock %}

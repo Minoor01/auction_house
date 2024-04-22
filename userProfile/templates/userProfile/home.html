@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+       
+        <h1 >Welcome to Auction House</h1>
+        <h6>Where Homes Meet Opportunities</h6>
+        <div class="mt-4">
+          {%if user.is_authenticated%}
+            {%if user.buyer_seller%}
+            <a href="{% url 'account_logout'%}" class="btn btn-primary ">Logout</a>
+            {%else%}
+            <a href="{%url 'userProfile:register'%}" class="btn btn-primary ">Register </a>
+            <a href="{% url 'account_logout'%}" class="btn btn-primary ">Logout</a>
+            {%endif%}
+          {%else%}
+          <a href="{%url 'account_signup'%}" class="btn btn-primary ">Sign Up</a>
+          <a href="{%url 'account_login'%}" class="btn btn-primary ">Login</a>
+          {%endif%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
+
+
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    {%if user.is_authenticated%} 
+        <h1 allign="center" >Hello {{user.username}} Welcome to Auction House</h1>
+        <h3 allign="center"><a href="{%url 'userProfile:register'%}">Register as a buyer/seller</a></h3>
+        <a href="{% url 'account_logout'%}">Log Out</a><br><br>
+    {%else%} 
+        <h1 allign="center" >Welcome to Auction House</h1>
+        <h3 allign="center"><a href="{%url 'account_signup'%}">Please sign up</a></h3>
+        <h3 allign="center"><a href="{%url 'account_login'%}">Please sign in</a></h3>
+    {%endif%}
+</html>
+-->

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load allauth %}
+
+{% block content %}
+<br><br><br>
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="card p-4 border-primary rounded shadow" style="background-color: #001f3f; max-width: 400px; color: white;">
+        <h1 style="color: white; font-size: 35px;">Verify Your Email Address</h1>
+  
+    <p>
+        {% blocktrans %}We have sent an email to you for verification. Follow the link provided to finalize the signup process. If you do not see the verification email in your main inbox, check your spam folder. Please contact us if you do not receive the verification email within a few minutes.{% endblocktrans %}
+    </p>
+</div>
+   
+{% endblock content %}
